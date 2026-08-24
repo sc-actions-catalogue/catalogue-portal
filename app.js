@@ -118,6 +118,7 @@ function renderCatalogue(items) {
       <dt>Risk</dt><dd>${item.risk}</dd>
       <dt>Assessment</dt><dd>${item.assessment_date || "Unknown"}</dd>
       <dt>Approver</dt><dd>${item.approver || item.reviewer || "Recorded in review"}</dd>
+      <dt>Approval reason</dt><dd>${item.approval_reason || "Recorded in review"}</dd>
       <dt>Runner</dt><dd>${runnerSummary(item.runner_requirements)}</dd>`;
     node.querySelector("pre").textContent = item.usage || `- uses: ${item.catalogue_repo}@${item.catalogue_ref}`;
     const report = node.querySelector(".report-link");
