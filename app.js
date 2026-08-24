@@ -1,6 +1,7 @@
 const CONFIG = {
   productionApiBase: window.CATALOGUE_API_BASE || "",
-  localApiBase: "http://127.0.0.1:8088/api"
+  localApiBase: "http://127.0.0.1:8088/api",
+  githubIssueUrl: "https://github.com/sc-actions-catalogue/catalogue-control/issues/new"
 };
 
 class SubmissionAdapter {
@@ -9,14 +10,10 @@ class SubmissionAdapter {
     this.apiBase = CONFIG.productionApiBase || (this.isLocalPage ? CONFIG.localApiBase : "");
   }
 
-  requireApi() {
-    if (!this.apiBase) {
-      throw new Error("Submission backend is not configured for this hosted Catalogue portal.");
-    }
-  }
-
   async submit(payload) {
-    this.requireApi();
+    if (!this.apiBase) {
+      return this.openGitHubIssue(payload);
+    }
     const response = await fetch(`${this.apiBase}/requests`, {
       method: "POST",
       headers: {"content-type": "application/json"},
@@ -27,7 +24,9 @@ class SubmissionAdapter {
   }
 
   async status(requestId) {
-    this.requireApi();
+    if (!this.apiBase) {
+      throw new Error("Hosted status lookup requires the catalogue-control request files or a backend API. Check the review issue or Actions run in GitHub.");
+    }
     const response = await fetch(`${this.apiBase}/requests/${encodeURIComponent(requestId)}`);
     if (!response.ok) throw new Error("Request not found");
     return response.json();
@@ -41,6 +40,49 @@ class SubmissionAdapter {
     } catch (_) {}
     const fallback = await fetch("data/actions.json");
     return fallback.json();
+  }
+
+  openGitHubIssue(payload) {
+    const title = `[CATALOGUE-REQUEST] ${payload.source_repository}@${payload.requested_reference}`;
+    const body = [
+      "## Catalogue Onboarding Request",
+      "",
+      `Source repository: ${payload.source_repository}`,
+      `Requested reference: ${payload.requested_reference}`,
+      "",
+      "## Requestor",
+      "",
+      `Name: ${payload.requestor.name}`,
+      `Email: ${payload.requestor.email || ""}`,
+      `GitHub username: ${payload.requestor.github_username || ""}`,
+      `Team: ${payload.requestor.team}`,
+      `Application: ${payload.requestor.application}`,
+      "",
+      "## Business justification",
+      "",
+      payload.business_justification,
+      "",
+      "## Intended usage",
+      "",
+      payload.intended_usage,
+      "",
+      "## Runner",
+      "",
+      payload.runner_preference,
+      "",
+      "## Additional comments",
+      "",
+      payload.comments || ""
+    ].join("\n");
+    const url = new URL(CONFIG.githubIssueUrl);
+    url.searchParams.set("title", title);
+    url.searchParams.set("body", body);
+    url.searchParams.set("labels", "catalogue-intake");
+    window.open(url.toString(), "_blank", "noopener,noreferrer");
+    return {
+      request_id: "Pending GitHub Issue submission",
+      status: "DRAFT_ISSUE_OPENED"
+    };
   }
 }
 
@@ -109,9 +151,11 @@ document.querySelector("#onboardForm").addEventListener("submit", async event =>
   result.textContent = "Submitting...";
   try {
     const response = await adapter.submit(payload);
-    result.textContent = `Submitted. Request ID: ${response.request_id}`;
+    result.textContent = response.status === "DRAFT_ISSUE_OPENED"
+      ? "A prefilled GitHub intake issue opened in a new tab. Click Submit new issue there to start assessment."
+      : `Submitted. Request ID: ${response.request_id}`;
   } catch (error) {
-    result.textContent = `${error.message} Ask the Catalogue owner to deploy the secure submission service and set CATALOGUE_API_BASE.`;
+    result.textContent = error.message;
   }
 });
 
@@ -130,7 +174,7 @@ document.querySelector("#statusForm").addEventListener("submit", async event => 
     }).join("");
     result.innerHTML = `<strong>${status.request_id}</strong>: ${status.status}<br>${status.reason || ""}<div class="timeline">${timeline}</div>`;
   } catch (error) {
-    result.textContent = `${error.message} Ask the Catalogue owner to deploy the secure submission service and set CATALOGUE_API_BASE.`;
+    result.textContent = error.message;
   }
 });
 
