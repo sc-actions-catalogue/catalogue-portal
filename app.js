@@ -2,7 +2,8 @@ const CONFIG = {
   productionApiBase: window.CATALOGUE_API_BASE || "",
   localApiBase: "http://127.0.0.1:8088/api",
   githubIssueUrl: "https://github.com/sc-actions-catalogue/catalogue-control/issues/new",
-  catalogueUrl: "https://raw.githubusercontent.com/sc-actions-catalogue/catalogue-control/main/catalogue/catalogue.json"
+  catalogueUrl: "https://raw.githubusercontent.com/sc-actions-catalogue/catalogue-control/main/catalogue/catalogue.json",
+  controlApiBase: "https://api.github.com/repos/sc-actions-catalogue/catalogue-control/contents"
 };
 
 class SubmissionAdapter {
@@ -103,7 +104,8 @@ function renderCatalogue(items) {
   const grid = document.querySelector("#catalogue");
   const empty = document.querySelector("#emptyCatalogue");
   grid.innerHTML = "";
-  const filtered = items.filter(item => JSON.stringify(item).toLowerCase().includes(query));
+  const approved = items.filter(item => item.status !== "REJECTED");
+  const filtered = approved.filter(item => JSON.stringify(item).toLowerCase().includes(query));
   empty.style.display = filtered.length ? "none" : "block";
   for (const item of filtered) {
     const node = document.querySelector("#cardTemplate").content.cloneNode(true);
@@ -115,9 +117,38 @@ function renderCatalogue(items) {
       <dt>Status</dt><dd>${item.status}</dd>
       <dt>Risk</dt><dd>${item.risk}</dd>
       <dt>Assessment</dt><dd>${item.assessment_date || "Unknown"}</dd>
+      <dt>Approver</dt><dd>${item.approver || item.reviewer || "Recorded in review"}</dd>
       <dt>Runner</dt><dd>${runnerSummary(item.runner_requirements)}</dd>`;
     node.querySelector("pre").textContent = item.usage || `- uses: ${item.catalogue_repo}@${item.catalogue_ref}`;
+    const report = node.querySelector(".report-link");
+    const reportHref = item.assessment_report_url || reportUrl(item.request_id);
+    report.href = reportHref;
+    report.style.display = reportHref ? "inline-block" : "none";
     grid.appendChild(node);
+  }
+}
+
+function renderRequests(items) {
+  const query = document.querySelector("#search").value.toLowerCase();
+  const publishedIds = new Set((window.catalogueItems || []).map(item => item.request_id).filter(Boolean));
+  const rows = document.querySelector("#requestRows");
+  const empty = document.querySelector("#emptyRequests");
+  rows.innerHTML = "";
+  const filtered = items
+    .filter(item => !publishedIds.has(item.request_id))
+    .filter(item => JSON.stringify(item).toLowerCase().includes(query));
+  empty.style.display = filtered.length ? "none" : "block";
+  for (const item of filtered) {
+    const tr = document.createElement("tr");
+    const status = displayStatus(item.status);
+    tr.innerHTML = `
+      <td><a href="${requestUrl(item.request_id)}" target="_blank" rel="noreferrer">${item.request_id}</a></td>
+      <td>${item.action}</td>
+      <td>${item.requester}</td>
+      <td><span class="status-pill ${status.className}">${status.label}</span></td>
+      <td>${item.reason || item.recommendation || "Awaiting reviewer decision"}</td>
+      <td><a href="${item.report_url}" target="_blank" rel="noreferrer">Report</a></td>`;
+    rows.appendChild(tr);
   }
 }
 
@@ -126,13 +157,84 @@ function runnerSummary(value) {
   return [value.operating_system, value.container_requirement].filter(Boolean).join("; ");
 }
 
+function reportUrl(requestId) {
+  return requestId ? `https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/${requestId}/report.md` : "";
+}
+
+function requestUrl(requestId) {
+  return `https://github.com/sc-actions-catalogue/catalogue-control/tree/main/requests/${requestId}`;
+}
+
+function displayStatus(status) {
+  const value = (status || "AWAITING_REVIEW").toUpperCase();
+  if (value === "REJECTED") return {label: "Reject", className: "status-rejected"};
+  if (["AWAITING_REVIEW", "SUBMITTED", "VALIDATING", "IMPORTING", "ASSESSING"].includes(value)) {
+    return {label: "In review", className: "status-review"};
+  }
+  if (["FAILED_VALIDATION", "FAILED_IMPORT", "FAILED_ASSESSMENT", "FAILED_PUBLICATION", "APPROVED", "PUBLISHING"].includes(value)) {
+    return {label: "On hold", className: "status-hold"};
+  }
+  return {label: value.replaceAll("_", " "), className: "status-hold"};
+}
+
+async function fetchJson(url) {
+  const response = await fetch(cacheBust(url), {cache: "no-store"});
+  if (!response.ok) throw new Error(`Unable to load ${url}`);
+  return response.json();
+}
+
+function cacheBust(url) {
+  return `${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}`;
+}
+
+async function fetchControlJson(path) {
+  const response = await fetch(cacheBust(`${CONFIG.controlApiBase}/${path}`), {cache: "no-store"});
+  if (!response.ok) return null;
+  const payload = await response.json();
+  const raw = await fetch(cacheBust(payload.download_url), {cache: "no-store"});
+  if (!raw.ok) return null;
+  return raw.json();
+}
+
+async function loadRequests() {
+  try {
+    const entries = await fetchJson(CONFIG.controlApiBase + "/requests");
+    const requestDirs = entries.filter(entry => entry.type === "dir").map(entry => entry.name).sort().reverse();
+    const requests = await Promise.all(requestDirs.map(async requestId => {
+      const [request, status, report] = await Promise.all([
+        fetchControlJson(`requests/${requestId}/request.json`),
+        fetchControlJson(`requests/${requestId}/status.json`),
+        fetchControlJson(`assessments/${requestId}/report.json`)
+      ]);
+      if (!request) return null;
+      return {
+        request_id: requestId,
+        action: `${request.source_repository}@${request.requested_reference}`,
+        requester: request.requestor?.name || request.requestor?.github_username || request.requestor?.email || "Unknown",
+        status: status?.status || "AWAITING_REVIEW",
+        reason: status?.reason || "",
+        recommendation: report?.recommendation || "",
+        report_url: reportUrl(requestId)
+      };
+    }));
+    window.requestItems = requests.filter(Boolean);
+  } catch (_) {
+    window.requestItems = [];
+  }
+  renderRequests(window.requestItems);
+}
+
 async function loadCatalogue() {
   const data = await adapter.catalogue();
   window.catalogueItems = data.actions || [];
   renderCatalogue(window.catalogueItems);
+  await loadRequests();
 }
 
-document.querySelector("#search").addEventListener("input", () => renderCatalogue(window.catalogueItems || []));
+document.querySelector("#search").addEventListener("input", () => {
+  renderCatalogue(window.catalogueItems || []);
+  renderRequests(window.requestItems || []);
+});
 
 document.querySelector("#onboardForm").addEventListener("submit", async event => {
   event.preventDefault();
