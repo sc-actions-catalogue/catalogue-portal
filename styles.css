@@ -19,6 +19,7 @@ main { min-height: 100vh; }
 .hero { min-height: 72vh; display: flex; flex-direction: column; justify-content: center; padding: 64px clamp(20px, 7vw, 96px); background: linear-gradient(135deg, #eef4f8, #ffffff 45%, #f3f7ee); border-bottom: 1px solid var(--line); }
 h1 { font-size: clamp(42px, 6vw, 76px); line-height: 1; max-width: 920px; margin: 0 0 18px; letter-spacing: 0; }
 h2 { font-size: 28px; margin: 0 0 20px; letter-spacing: 0; }
+h3.subhead { margin: 24px 0 12px; font-size: 18px; }
 .hero p { max-width: 720px; color: var(--muted); font-size: 20px; line-height: 1.5; }
 .actions, .inline-form { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 .button { border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 6px; padding: 10px 14px; font-weight: 700; cursor: pointer; min-height: 42px; }
@@ -32,6 +33,7 @@ textarea { min-height: 96px; resize: vertical; }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
 .card { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); padding: 18px; }
 .card h3 { margin: 0 0 8px; font-size: 20px; }
+.report-link { display: inline-block; margin-top: 12px; font-weight: 700; }
 .desc { color: var(--muted); min-height: 44px; }
 dl { display: grid; grid-template-columns: 120px 1fr; gap: 8px 12px; font-size: 14px; }
 dt { color: var(--muted); }
@@ -43,6 +45,16 @@ label { display: grid; gap: 6px; color: var(--muted); font-weight: 650; }
 .result, .status, .empty { margin-top: 16px; color: var(--muted); }
 .timeline { display: grid; gap: 6px; margin-top: 12px; }
 .current { color: var(--warn); font-weight: 800; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+table { width: 100%; border-collapse: collapse; min-width: 760px; }
+th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { color: var(--muted); font-size: 13px; font-weight: 800; text-transform: uppercase; }
+td { font-size: 14px; overflow-wrap: anywhere; }
+tbody tr:last-child td { border-bottom: 0; }
+.status-pill { display: inline-flex; align-items: center; min-height: 26px; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 800; background: #eef4f8; color: var(--accent); white-space: nowrap; }
+.status-rejected { background: #fff0eb; color: #9f2d20; }
+.status-review { background: #eef4f8; color: var(--accent); }
+.status-hold { background: #fff7e8; color: var(--warn); }
 @media (max-width: 720px) {
   .topbar { align-items: flex-start; flex-direction: column; }
   .form { grid-template-columns: 1fr; }
