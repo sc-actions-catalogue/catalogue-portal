@@ -5,10 +5,18 @@ const CONFIG = {
 
 class SubmissionAdapter {
   constructor() {
-    this.apiBase = CONFIG.productionApiBase || CONFIG.localApiBase;
+    this.isLocalPage = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
+    this.apiBase = CONFIG.productionApiBase || (this.isLocalPage ? CONFIG.localApiBase : "");
+  }
+
+  requireApi() {
+    if (!this.apiBase) {
+      throw new Error("Submission backend is not configured for this hosted Catalogue portal.");
+    }
   }
 
   async submit(payload) {
+    this.requireApi();
     const response = await fetch(`${this.apiBase}/requests`, {
       method: "POST",
       headers: {"content-type": "application/json"},
@@ -19,6 +27,7 @@ class SubmissionAdapter {
   }
 
   async status(requestId) {
+    this.requireApi();
     const response = await fetch(`${this.apiBase}/requests/${encodeURIComponent(requestId)}`);
     if (!response.ok) throw new Error("Request not found");
     return response.json();
@@ -26,6 +35,7 @@ class SubmissionAdapter {
 
   async catalogue() {
     try {
+      if (!this.apiBase) throw new Error("No hosted API configured");
       const response = await fetch(`${this.apiBase}/catalogue`);
       if (response.ok) return response.json();
     } catch (_) {}
@@ -101,7 +111,7 @@ document.querySelector("#onboardForm").addEventListener("submit", async event =>
     const response = await adapter.submit(payload);
     result.textContent = `Submitted. Request ID: ${response.request_id}`;
   } catch (error) {
-    result.textContent = error.message;
+    result.textContent = `${error.message} Ask the Catalogue owner to deploy the secure submission service and set CATALOGUE_API_BASE.`;
   }
 });
 
@@ -120,7 +130,7 @@ document.querySelector("#statusForm").addEventListener("submit", async event => 
     }).join("");
     result.innerHTML = `<strong>${status.request_id}</strong>: ${status.status}<br>${status.reason || ""}<div class="timeline">${timeline}</div>`;
   } catch (error) {
-    result.textContent = error.message;
+    result.textContent = `${error.message} Ask the Catalogue owner to deploy the secure submission service and set CATALOGUE_API_BASE.`;
   }
 });
 
