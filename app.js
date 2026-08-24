@@ -1,7 +1,8 @@
 const CONFIG = {
   productionApiBase: window.CATALOGUE_API_BASE || "",
   localApiBase: "http://127.0.0.1:8088/api",
-  githubIssueUrl: "https://github.com/sc-actions-catalogue/catalogue-control/issues/new"
+  githubIssueUrl: "https://github.com/sc-actions-catalogue/catalogue-control/issues/new",
+  catalogueUrl: "https://raw.githubusercontent.com/sc-actions-catalogue/catalogue-control/main/catalogue/catalogue.json"
 };
 
 class SubmissionAdapter {
@@ -36,6 +37,10 @@ class SubmissionAdapter {
     try {
       if (!this.apiBase) throw new Error("No hosted API configured");
       const response = await fetch(`${this.apiBase}/catalogue`);
+      if (response.ok) return response.json();
+    } catch (_) {}
+    try {
+      const response = await fetch(`${CONFIG.catalogueUrl}?t=${Date.now()}`, {cache: "no-store"});
       if (response.ok) return response.json();
     } catch (_) {}
     const fallback = await fetch("data/actions.json");
