@@ -1,0 +1,13 @@
+{
+  "requests": [
+    {
+      "request_id": "CAT-2026-00002",
+      "action": "actions/setup-python@v7",
+      "requester": "Tuhin",
+      "status": "REJECTED",
+      "reason": "High Risk",
+      "recommendation": "REJECT",
+      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00002/report.md"
+    }
+  ]
+}
