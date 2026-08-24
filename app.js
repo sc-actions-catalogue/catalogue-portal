@@ -3,7 +3,7 @@ const CONFIG = {
   localApiBase: "http://127.0.0.1:8088/api",
   githubIssueUrl: "https://github.com/sc-actions-catalogue/catalogue-control/issues/new",
   catalogueUrl: "https://raw.githubusercontent.com/sc-actions-catalogue/catalogue-control/main/catalogue/catalogue.json",
-  controlApiBase: "https://api.github.com/repos/sc-actions-catalogue/catalogue-control/contents"
+  requestsUrl: "data/requests.json"
 };
 
 class SubmissionAdapter {
@@ -188,37 +188,10 @@ function cacheBust(url) {
   return `${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}`;
 }
 
-async function fetchControlJson(path) {
-  const response = await fetch(cacheBust(`${CONFIG.controlApiBase}/${path}`), {cache: "no-store"});
-  if (!response.ok) return null;
-  const payload = await response.json();
-  const raw = await fetch(cacheBust(payload.download_url), {cache: "no-store"});
-  if (!raw.ok) return null;
-  return raw.json();
-}
-
 async function loadRequests() {
   try {
-    const entries = await fetchJson(CONFIG.controlApiBase + "/requests");
-    const requestDirs = entries.filter(entry => entry.type === "dir").map(entry => entry.name).sort().reverse();
-    const requests = await Promise.all(requestDirs.map(async requestId => {
-      const [request, status, report] = await Promise.all([
-        fetchControlJson(`requests/${requestId}/request.json`),
-        fetchControlJson(`requests/${requestId}/status.json`),
-        fetchControlJson(`assessments/${requestId}/report.json`)
-      ]);
-      if (!request) return null;
-      return {
-        request_id: requestId,
-        action: `${request.source_repository}@${request.requested_reference}`,
-        requester: request.requestor?.name || request.requestor?.github_username || request.requestor?.email || "Unknown",
-        status: status?.status || "AWAITING_REVIEW",
-        reason: status?.reason || "",
-        recommendation: report?.recommendation || "",
-        report_url: reportUrl(requestId)
-      };
-    }));
-    window.requestItems = requests.filter(Boolean);
+    const data = await fetchJson(CONFIG.requestsUrl);
+    window.requestItems = data.requests || [];
   } catch (_) {
     window.requestItems = [];
   }
