@@ -30,10 +30,28 @@
     <section id="browse" class="band">
       <div class="section-head">
         <h2>Browse Catalogue</h2>
-        <input id="search" type="search" placeholder="Search approved Actions">
+        <input id="search" type="search" placeholder="Search Actions and requests">
       </div>
+      <h3 class="subhead">Approved Actions</h3>
       <div id="catalogue" class="grid"></div>
       <div id="emptyCatalogue" class="empty">No approved Actions are published yet.</div>
+      <h3 class="subhead">Requests Under Review / Rejected</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Action</th>
+              <th>Requester</th>
+              <th>Status</th>
+              <th>Status reason</th>
+              <th>Report</th>
+            </tr>
+          </thead>
+          <tbody id="requestRows"></tbody>
+        </table>
+      </div>
+      <div id="emptyRequests" class="empty">No rejected, in-review, or on-hold requests found.</div>
     </section>
 
     <section id="onboard" class="band">
@@ -75,6 +93,7 @@
       <p class="desc"></p>
       <dl></dl>
       <pre></pre>
+      <a class="report-link" target="_blank" rel="noreferrer">Assessment Report</a>
     </article>
   </template>
   <script src="app.js"></script>
