@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Actions & Workflow Catalogue</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Actions & Workflow Catalogue</div>
+    <nav>
+      <a href="#browse">Browse</a>
+      <a href="#onboard">Onboard</a>
+      <a href="#status">Status</a>
+      <a href="#about">Governance</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Actions & Workflow Catalogue</h1>
+      <p>Discover and consume approved GitHub Actions through a governed enterprise Catalogue.</p>
+      <div class="actions">
+        <a class="button primary" href="#browse">Browse Catalogue</a>
+        <a class="button" href="#onboard">Onboard Action</a>
+      </div>
+    </section>
+
+    <section id="browse" class="band">
+      <div class="section-head">
+        <h2>Browse Catalogue</h2>
+        <input id="search" type="search" placeholder="Search approved Actions">
+      </div>
+      <div id="catalogue" class="grid"></div>
+      <div id="emptyCatalogue" class="empty">No approved Actions are published yet.</div>
+    </section>
+
+    <section id="onboard" class="band">
+      <h2>Onboard Action</h2>
+      <form id="onboardForm" class="form">
+        <label>Action repository<input name="source_repository" required placeholder="actions/checkout"></label>
+        <label>Version/reference<input name="requested_reference" required placeholder="v4"></label>
+        <label>Requestor name<input name="name" required></label>
+        <label>Email or GitHub username<input name="identity" required></label>
+        <label>Team<input name="team" required></label>
+        <label>Application/project<input name="application" required></label>
+        <label>Runner<select name="runner_preference"><option value="UNKNOWN">Unknown</option><option value="GITHUB_HOSTED">GitHub-hosted</option><option value="SELF_HOSTED">Self-hosted</option></select></label>
+        <label class="wide">Business justification<textarea name="business_justification" required></textarea></label>
+        <label class="wide">Intended usage<textarea name="intended_usage" required></textarea></label>
+        <label class="wide">Additional comments<textarea name="comments"></textarea></label>
+        <button class="button primary" type="submit">Submit for Assessment</button>
+      </form>
+      <div id="submitResult" class="result"></div>
+    </section>
+
+    <section id="status" class="band">
+      <h2>Request Status</h2>
+      <form id="statusForm" class="inline-form">
+        <input name="request_id" placeholder="CAT-2026-00001" required>
+        <button class="button" type="submit">Check Status</button>
+      </form>
+      <div id="statusResult" class="status"></div>
+    </section>
+
+    <section id="about" class="band">
+      <h2>About / Governance</h2>
+      <p>The Catalogue is backed by Git, static assessment, human approval, provenance, and controlled publication inside <strong>sc-actions-catalogue</strong>.</p>
+    </section>
+  </main>
+
+  <template id="cardTemplate">
+    <article class="card">
+      <h3></h3>
+      <p class="desc"></p>
+      <dl></dl>
+      <pre></pre>
+    </article>
+  </template>
+  <script src="app.js"></script>
+</body>
+</html>
