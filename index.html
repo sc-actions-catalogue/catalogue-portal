@@ -88,14 +88,28 @@
   </main>
 
   <template id="cardTemplate">
-    <article class="card">
+    <button class="card action-card" type="button">
       <h3></h3>
       <p class="desc"></p>
-      <dl></dl>
-      <pre></pre>
-      <a class="report-link" target="_blank" rel="noreferrer">Assessment Report</a>
-    </article>
+      <div class="card-meta"></div>
+      <code></code>
+    </button>
   </template>
+  <dialog id="actionDialog" class="detail-dialog">
+    <div class="dialog-head">
+      <div>
+        <h2 id="dialogTitle"></h2>
+        <p id="dialogDescription"></p>
+      </div>
+      <button class="icon-button" type="button" id="closeDialog" aria-label="Close details">×</button>
+    </div>
+    <dl id="dialogFacts"></dl>
+    <h3 class="detail-subhead">Usage</h3>
+    <pre id="dialogUsage"></pre>
+    <h3 class="detail-subhead">Network</h3>
+    <div id="dialogNetwork" class="tag-list"></div>
+    <a id="dialogReport" class="report-link" target="_blank" rel="noreferrer">Assessment Report</a>
+  </dialog>
   <script src="app.js"></script>
 </body>
 </html>
