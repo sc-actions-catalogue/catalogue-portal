@@ -1,6 +1,17 @@
 {
   "requests": [
     {
+      "request_id": "CAT-2026-00004",
+      "action": "actions/snyk@v1",
+      "requester": "Tuhin",
+      "status": "SUBMITTED",
+      "reason": "Request accepted from submission adapter",
+      "recommendation": "",
+      "risk": "",
+      "report_url": "",
+      "updated_at": "2026-08-25T07:11:09+00:00"
+    },
+    {
       "request_id": "CAT-2026-00003",
       "action": "actions/checkout@v7",
       "requester": "Tuhin",
