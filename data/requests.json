@@ -4,12 +4,12 @@
       "request_id": "CAT-2026-00003",
       "action": "actions/checkout@v7",
       "requester": "Tuhin",
-      "status": "PUBLISHED",
-      "reason": "Published sc-actions-catalogue/actions/actions-checkout@actions-checkout/v7",
+      "status": "PUBLISHING",
+      "reason": "Publication requires GitHub App installation with repository administration permission",
       "recommendation": "REVIEW",
       "risk": "MEDIUM",
       "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00003/report.md",
-      "updated_at": "2026-08-25T06:18:21+00:00"
+      "updated_at": "2026-08-25T06:22:22+00:00"
     },
     {
       "request_id": "CAT-2026-00002",
