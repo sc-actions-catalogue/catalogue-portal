@@ -166,12 +166,12 @@
           "classification": "external"
         }
       ],
-      "assessment_date": "2026-08-24T21:33:10+00:00",
+      "assessment_date": "2026-08-25T04:42:46+00:00",
       "assessment_report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00003/report.md",
       "approver": "devopsnation",
       "approval_reason": "Good for Consumption",
-      "approval_date": "2026-08-25T04:33:32+00:00",
-      "published_date": "2026-08-25T04:33:37+00:00",
+      "approval_date": "2026-08-25T04:55:32+00:00",
+      "published_date": "2026-08-25T04:55:36+00:00",
       "usage": "- uses: sc-actions-catalogue/actions-checkout@v7"
     }
   ]
