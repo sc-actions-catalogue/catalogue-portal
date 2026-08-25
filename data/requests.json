@@ -4,12 +4,12 @@
       "request_id": "CAT-2026-00005",
       "action": "snyk/actions@master",
       "requester": "Tuhin",
-      "status": "PUBLISHING",
-      "reason": "Publication requires GitHub App installation with repository administration permission",
+      "status": "PUBLISHED",
+      "reason": "Published sc-actions-catalogue/actions/snyk-actions@snyk-actions/master",
       "recommendation": "REJECT",
       "risk": "HIGH",
       "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00005/report.md",
-      "updated_at": "2026-08-25T07:50:50+00:00"
+      "updated_at": "2026-08-25T07:51:00+00:00"
     },
     {
       "request_id": "CAT-2026-00004",
