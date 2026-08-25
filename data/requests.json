@@ -1,6 +1,17 @@
 {
   "requests": [
     {
+      "request_id": "CAT-2026-00001",
+      "action": "actions/checkout@v4",
+      "requester": "devopsnation",
+      "status": "REJECTED",
+      "reason": "Latest Version Available",
+      "recommendation": "REJECT",
+      "risk": "HIGH",
+      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00001/report.md",
+      "updated_at": "2026-08-25T08:19:26+00:00"
+    },
+    {
       "request_id": "CAT-2026-00005",
       "action": "snyk/actions@master",
       "requester": "Tuhin",
@@ -43,17 +54,6 @@
       "risk": "HIGH",
       "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00002/report.md",
       "updated_at": "2026-08-24T20:53:37+00:00"
-    },
-    {
-      "request_id": "CAT-2026-00001",
-      "action": "actions/checkout@v4",
-      "requester": "devopsnation",
-      "status": "AWAITING_REVIEW",
-      "reason": "Assessment complete with risk HIGH",
-      "recommendation": "REJECT",
-      "risk": "HIGH",
-      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00001/report.md",
-      "updated_at": "2026-08-24T19:29:09+00:00"
     }
   ]
 }
