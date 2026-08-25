@@ -107,7 +107,7 @@ function renderCatalogue(items) {
   const grid = document.querySelector("#catalogue");
   const empty = document.querySelector("#emptyCatalogue");
   grid.innerHTML = "";
-  const approved = items.filter(item => item.status !== "REJECTED");
+  const approved = dedupeApproved(items.filter(item => item.status !== "REJECTED"));
   const filtered = approved.filter(item => JSON.stringify(item).toLowerCase().includes(query));
   empty.style.display = filtered.length ? "none" : "block";
   for (const item of filtered) {
@@ -124,6 +124,18 @@ function renderCatalogue(items) {
     card.addEventListener("click", () => openActionDialog(item));
     grid.appendChild(node);
   }
+}
+
+function dedupeApproved(items) {
+  const byIdentity = new Map();
+  for (const item of items) {
+    const key = item.request_id || `${item.source}@${item.source_ref}`;
+    const existing = byIdentity.get(key);
+    if (!existing || String(item.published_date || item.approval_date || "") > String(existing.published_date || existing.approval_date || "")) {
+      byIdentity.set(key, item);
+    }
+  }
+  return Array.from(byIdentity.values());
 }
 
 function openActionDialog(item) {
