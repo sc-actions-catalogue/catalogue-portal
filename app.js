@@ -27,7 +27,10 @@ class SubmissionAdapter {
 
   async status(requestId) {
     if (!this.apiBase) {
-      throw new Error("Hosted status lookup requires the catalogue-control request files or a backend API. Check the review issue or Actions run in GitHub.");
+      const data = await fetchJson(CONFIG.requestsUrl);
+      const match = (data.requests || []).find(item => item.request_id.toLowerCase() === requestId.toLowerCase());
+      if (!match) throw new Error("Request not found in the published status table yet. Check the GitHub issue or Actions run.");
+      return match;
     }
     const response = await fetch(`${this.apiBase}/requests/${encodeURIComponent(requestId)}`);
     if (!response.ok) throw new Error("Request not found");
@@ -109,24 +112,66 @@ function renderCatalogue(items) {
   empty.style.display = filtered.length ? "none" : "block";
   for (const item of filtered) {
     const node = document.querySelector("#cardTemplate").content.cloneNode(true);
-    node.querySelector("h3").textContent = item.display_name || item.name;
-    node.querySelector(".desc").textContent = item.description || "Approved Catalogue Action";
-    node.querySelector("dl").innerHTML = `
-      <dt>Source</dt><dd>${item.source}@${item.source_ref}</dd>
-      <dt>Catalogue</dt><dd>${item.catalogue_repo}@${item.catalogue_ref}</dd>
-      <dt>Status</dt><dd>${item.status}</dd>
-      <dt>Risk</dt><dd>${item.risk}</dd>
-      <dt>Assessment</dt><dd>${item.assessment_date || "Unknown"}</dd>
-      <dt>Approver</dt><dd>${item.approver || item.reviewer || "Recorded in review"}</dd>
-      <dt>Approval reason</dt><dd>${item.approval_reason || "Recorded in review"}</dd>
-      <dt>Runner</dt><dd>${runnerSummary(item.runner_requirements)}</dd>`;
-    node.querySelector("pre").textContent = item.usage || `- uses: ${item.catalogue_repo}@${item.catalogue_ref}`;
-    const report = node.querySelector(".report-link");
-    const reportHref = item.assessment_report_url || reportUrl(item.request_id);
-    report.href = reportHref;
-    report.style.display = reportHref ? "inline-block" : "none";
+    const card = node.querySelector(".action-card");
+    card.querySelector("h3").textContent = item.display_name || item.name;
+    card.querySelector(".desc").textContent = item.description || "Approved Catalogue Action";
+    const meta = card.querySelector(".card-meta");
+    meta.innerHTML = "";
+    addTag(meta, `${item.risk || "Unknown"} risk`);
+    addTag(meta, `${item.source}@${item.source_ref}`);
+    addTag(meta, item.approver || item.reviewer || "Approved");
+    card.querySelector("code").textContent = item.usage || `- uses: ${item.catalogue_repo}${item.catalogue_path ? `/${item.catalogue_path}` : ""}@${item.catalogue_ref}`;
+    card.addEventListener("click", () => openActionDialog(item));
     grid.appendChild(node);
   }
+}
+
+function openActionDialog(item) {
+  const dialog = document.querySelector("#actionDialog");
+  document.querySelector("#dialogTitle").textContent = item.display_name || item.name;
+  document.querySelector("#dialogDescription").textContent = item.description || "Approved Catalogue Action";
+  const facts = document.querySelector("#dialogFacts");
+  facts.innerHTML = "";
+  addFact(facts, "Source", `${item.source}@${item.source_ref}`);
+  addFact(facts, "Catalogue", `${item.catalogue_repo}${item.catalogue_path ? `/${item.catalogue_path}` : ""}@${item.catalogue_ref}`);
+  addFact(facts, "Status", item.status || "APPROVED");
+  addFact(facts, "Risk", item.risk || "Unknown");
+  addFact(facts, "Assessment", item.assessment_date || "Unknown");
+  addFact(facts, "Approver", item.approver || item.reviewer || "Recorded in review");
+  addFact(facts, "Approval reason", item.approval_reason || "Recorded in review");
+  addFact(facts, "Runner", runnerSummary(item.runner_requirements));
+  document.querySelector("#dialogUsage").textContent = item.usage || `- uses: ${item.catalogue_repo}${item.catalogue_path ? `/${item.catalogue_path}` : ""}@${item.catalogue_ref}`;
+  const network = document.querySelector("#dialogNetwork");
+  network.innerHTML = "";
+  for (const entry of (item.network_requirements || []).slice(0, 20)) {
+    const tag = document.createElement("span");
+    tag.textContent = entry.domain || entry;
+    network.appendChild(tag);
+  }
+  if (!network.children.length) {
+    const tag = document.createElement("span");
+    tag.textContent = "No explicit network requirements recorded";
+    network.appendChild(tag);
+  }
+  const report = document.querySelector("#dialogReport");
+  const reportHref = item.assessment_report_url || reportUrl(item.request_id);
+  report.href = reportHref;
+  report.style.display = reportHref ? "inline-block" : "none";
+  dialog.showModal();
+}
+
+function addTag(parent, value) {
+  const tag = document.createElement("span");
+  tag.textContent = value;
+  parent.appendChild(tag);
+}
+
+function addFact(list, label, value) {
+  const dt = document.createElement("dt");
+  const dd = document.createElement("dd");
+  dt.textContent = label;
+  dd.textContent = value;
+  list.append(dt, dd);
 }
 
 function renderRequests(items) {
@@ -142,13 +187,36 @@ function renderRequests(items) {
   for (const item of filtered) {
     const tr = document.createElement("tr");
     const status = displayStatus(item.status);
-    tr.innerHTML = `
-      <td><a href="${requestUrl(item.request_id)}" target="_blank" rel="noreferrer">${item.request_id}</a></td>
-      <td>${item.action}</td>
-      <td>${item.requester}</td>
-      <td><span class="status-pill ${status.className}">${status.label}</span></td>
-      <td>${item.reason || item.recommendation || "Awaiting reviewer decision"}</td>
-      <td><a href="${item.report_url}" target="_blank" rel="noreferrer">Report</a></td>`;
+    const idCell = document.createElement("td");
+    const idLink = document.createElement("a");
+    idLink.href = requestUrl(item.request_id);
+    idLink.target = "_blank";
+    idLink.rel = "noreferrer";
+    idLink.textContent = item.request_id;
+    idCell.appendChild(idLink);
+    const actionCell = document.createElement("td");
+    actionCell.textContent = item.action;
+    const requesterCell = document.createElement("td");
+    requesterCell.textContent = item.requester;
+    const statusCell = document.createElement("td");
+    const pill = document.createElement("span");
+    pill.className = `status-pill ${status.className}`;
+    pill.textContent = status.label;
+    statusCell.appendChild(pill);
+    const reasonCell = document.createElement("td");
+    reasonCell.textContent = item.reason || item.recommendation || "Awaiting reviewer decision";
+    const reportCell = document.createElement("td");
+    if (item.report_url) {
+      const reportLink = document.createElement("a");
+      reportLink.href = item.report_url;
+      reportLink.target = "_blank";
+      reportLink.rel = "noreferrer";
+      reportLink.textContent = "Report";
+      reportCell.appendChild(reportLink);
+    } else {
+      reportCell.textContent = "Pending";
+    }
+    tr.append(idCell, actionCell, requesterCell, statusCell, reasonCell, reportCell);
     rows.appendChild(tr);
   }
 }
@@ -210,6 +278,10 @@ document.querySelector("#search").addEventListener("input", () => {
   renderRequests(window.requestItems || []);
 });
 
+document.querySelector("#closeDialog").addEventListener("click", () => {
+  document.querySelector("#actionDialog").close();
+});
+
 document.querySelector("#onboardForm").addEventListener("submit", async event => {
   event.preventDefault();
   const form = new FormData(event.target);
@@ -248,12 +320,21 @@ document.querySelector("#statusForm").addEventListener("submit", async event => 
   try {
     const status = await adapter.status(requestId);
     const index = states.indexOf(status.status);
-    const timeline = states.map((state, i) => {
+    result.textContent = "";
+    const summary = document.createElement("strong");
+    summary.textContent = `${status.request_id}: ${status.status}`;
+    const reason = document.createElement("div");
+    reason.textContent = status.reason || "";
+    const timeline = document.createElement("div");
+    timeline.className = "timeline";
+    for (const [i, state] of states.entries()) {
+      const item = document.createElement("div");
       const mark = i < index ? "✓" : i === index ? "→" : "○";
-      const klass = i === index ? "current" : "";
-      return `<div class="${klass}">${mark} ${state.replaceAll("_", " ")}</div>`;
-    }).join("");
-    result.innerHTML = `<strong>${status.request_id}</strong>: ${status.status}<br>${status.reason || ""}<div class="timeline">${timeline}</div>`;
+      if (i === index) item.className = "current";
+      item.textContent = `${mark} ${state.replaceAll("_", " ")}`;
+      timeline.appendChild(item);
+    }
+    result.append(summary, reason, timeline);
   } catch (error) {
     result.textContent = error.message;
   }
