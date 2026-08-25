@@ -176,6 +176,113 @@
       "usage": "- uses: sc-actions-catalogue/actions/actions-checkout@actions-checkout/v7"
     },
     {
+      "request_id": "CAT-2026-00005",
+      "name": "actions",
+      "display_name": "Snyk",
+      "description": "Check your applications for vulnerabilities using Snyk",
+      "source": "snyk/actions",
+      "source_ref": "master",
+      "resolved_sha": "12140f4059e244892ae643824a95459a102120dd",
+      "catalogue_repo": "sc-actions-catalogue/actions",
+      "catalogue_path": "snyk-actions",
+      "catalogue_ref": "snyk-actions/master",
+      "status": "APPROVED",
+      "risk": "HIGH",
+      "runner_requirements": {
+        "operating_system": "Unknown / Manual Review Required",
+        "architecture": "Unknown",
+        "container_requirement": "Required",
+        "node_runtime": "Not indicated",
+        "python_runtime": "Unknown",
+        "shell": "Unknown",
+        "required_binaries": "Requires manual review",
+        "required_tools": "Requires manual review",
+        "required_network_destinations": "See network requirements",
+        "internet_access": "Likely required",
+        "docker_daemon_requirement": "Required",
+        "privileged_access": "Review required",
+        "filesystem_requirements": "Requires manual review",
+        "estimated_compute": "Unknown"
+      },
+      "network_requirements": [
+        {
+          "domain": "app.snyk.io",
+          "classification": "external"
+        },
+        {
+          "domain": "docs.github.com",
+          "classification": "external"
+        },
+        {
+          "domain": "docs.snyk.io",
+          "classification": "external"
+        },
+        {
+          "domain": "downloads.snyk.io",
+          "classification": "external"
+        },
+        {
+          "domain": "github.com",
+          "classification": "known"
+        },
+        {
+          "domain": "ns.adobe.com",
+          "classification": "external"
+        },
+        {
+          "domain": "pre-commit.com",
+          "classification": "external"
+        },
+        {
+          "domain": "semver.org",
+          "classification": "external"
+        },
+        {
+          "domain": "snyk.co",
+          "classification": "external"
+        },
+        {
+          "domain": "snyk.io",
+          "classification": "external"
+        },
+        {
+          "domain": "snyk.io)",
+          "classification": "external"
+        },
+        {
+          "domain": "static.snyk.io",
+          "classification": "external"
+        },
+        {
+          "domain": "support.snyk.io",
+          "classification": "external"
+        },
+        {
+          "domain": "www.apache.org",
+          "classification": "external"
+        },
+        {
+          "domain": "www.contributor-covenant.org",
+          "classification": "external"
+        },
+        {
+          "domain": "www.conventionalcommits.org",
+          "classification": "external"
+        },
+        {
+          "domain": "www.w3.org",
+          "classification": "external"
+        }
+      ],
+      "assessment_date": "2026-08-25T07:49:26+00:00",
+      "assessment_report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00005/report.md",
+      "approver": "devopsnation",
+      "approval_reason": "Good for Consumption",
+      "approval_date": "2026-08-25T07:50:50+00:00",
+      "published_date": "2026-08-25T07:50:56+00:00",
+      "usage": "- uses: sc-actions-catalogue/actions/snyk-actions@snyk-actions/master"
+    },
+    {
       "request_id": "CAT-2026-00003",
       "name": "checkout",
       "display_name": "Checkout",
