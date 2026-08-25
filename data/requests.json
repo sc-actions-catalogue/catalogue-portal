@@ -4,12 +4,12 @@
       "request_id": "CAT-2026-00005",
       "action": "snyk/actions@master",
       "requester": "Tuhin",
-      "status": "SUBMITTED",
-      "reason": "Request accepted from submission adapter",
-      "recommendation": "",
-      "risk": "",
-      "report_url": "",
-      "updated_at": "2026-08-25T07:47:35+00:00"
+      "status": "AWAITING_REVIEW",
+      "reason": "Assessment complete with risk HIGH",
+      "recommendation": "REJECT",
+      "risk": "HIGH",
+      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00005/report.md",
+      "updated_at": "2026-08-25T07:47:41+00:00"
     },
     {
       "request_id": "CAT-2026-00004",
