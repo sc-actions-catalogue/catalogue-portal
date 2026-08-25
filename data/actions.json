@@ -1,3 +1,178 @@
 {
-  "actions": []
+  "actions": [
+    {
+      "request_id": "CAT-2026-00003",
+      "name": "checkout",
+      "display_name": "Checkout",
+      "description": "Checkout a Git repository at a particular version",
+      "source": "actions/checkout",
+      "source_ref": "v7",
+      "resolved_sha": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "catalogue_repo": "sc-actions-catalogue/actions-checkout",
+      "catalogue_ref": "v7",
+      "status": "APPROVED",
+      "risk": "MEDIUM",
+      "runner_requirements": {
+        "operating_system": "Unknown / Manual Review Required",
+        "architecture": "Unknown",
+        "container_requirement": "Not indicated",
+        "node_runtime": "node24",
+        "python_runtime": "Unknown",
+        "shell": "Unknown",
+        "required_binaries": "Requires manual review",
+        "required_tools": "Requires manual review",
+        "required_network_destinations": "See network requirements",
+        "internet_access": "Likely required",
+        "docker_daemon_requirement": "Not indicated",
+        "privileged_access": "Not indicated",
+        "filesystem_requirements": "Requires manual review",
+        "estimated_compute": "Unknown"
+      },
+      "network_requirements": [
+        {
+          "domain": "api.contoso.ghe.com",
+          "classification": "external"
+        },
+        {
+          "domain": "api.fabrikam.ghe.com",
+          "classification": "external"
+        },
+        {
+          "domain": "api.github.com",
+          "classification": "known"
+        },
+        {
+          "domain": "codecov.io",
+          "classification": "external"
+        },
+        {
+          "domain": "contoso.com",
+          "classification": "external"
+        },
+        {
+          "domain": "contoso.ghe.com",
+          "classification": "external"
+        },
+        {
+          "domain": "developer.github.com",
+          "classification": "external"
+        },
+        {
+          "domain": "docs.github.com",
+          "classification": "external"
+        },
+        {
+          "domain": "docs.microsoft.com",
+          "classification": "external"
+        },
+        {
+          "domain": "eslint.org",
+          "classification": "external"
+        },
+        {
+          "domain": "fabrikam.ghe.com",
+          "classification": "external"
+        },
+        {
+          "domain": "gh.io",
+          "classification": "external"
+        },
+        {
+          "domain": "git-scm.com",
+          "classification": "external"
+        },
+        {
+          "domain": "github.com",
+          "classification": "known"
+        },
+        {
+          "domain": "help.github.com",
+          "classification": "external"
+        },
+        {
+          "domain": "help.github.com)",
+          "classification": "external"
+        },
+        {
+          "domain": "hub.docker.com",
+          "classification": "external"
+        },
+        {
+          "domain": "img.shields.io",
+          "classification": "external"
+        },
+        {
+          "domain": "linux.die.net",
+          "classification": "external"
+        },
+        {
+          "domain": "mock-github.localhost",
+          "classification": "external"
+        },
+        {
+          "domain": "my-ghes-server.com",
+          "classification": "external"
+        },
+        {
+          "domain": "my-ghes-server.example.com",
+          "classification": "external"
+        },
+        {
+          "domain": "npmjs.org",
+          "classification": "external"
+        },
+        {
+          "domain": "opencollective.com",
+          "classification": "external"
+        },
+        {
+          "domain": "opensource.guide",
+          "classification": "external"
+        },
+        {
+          "domain": "registry.npmjs.org",
+          "classification": "external"
+        },
+        {
+          "domain": "spdx.org",
+          "classification": "external"
+        },
+        {
+          "domain": "src.onpremise.fabrikam.com",
+          "classification": "external"
+        },
+        {
+          "domain": "support.github.com",
+          "classification": "external"
+        },
+        {
+          "domain": "tbaggery.com",
+          "classification": "external"
+        },
+        {
+          "domain": "test.github.localhost",
+          "classification": "external"
+        },
+        {
+          "domain": "tidelift.com",
+          "classification": "external"
+        },
+        {
+          "domain": "undici.nodejs.org",
+          "classification": "external"
+        },
+        {
+          "domain": "www.apache.org",
+          "classification": "external"
+        }
+      ],
+      "assessment_date": "2026-08-24T21:33:10+00:00",
+      "assessment_report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00003/report.md",
+      "approver": "devopsnation",
+      "approval_reason": "Good for Consumption",
+      "approval_date": "2026-08-25T04:33:32+00:00",
+      "published_date": "2026-08-25T04:33:37+00:00",
+      "usage": "- uses: sc-actions-catalogue/actions-checkout@v7"
+    }
+  ]
 }
