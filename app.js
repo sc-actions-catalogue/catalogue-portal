@@ -96,7 +96,7 @@ class SubmissionAdapter {
 }
 
 const adapter = new SubmissionAdapter();
-const states = ["SUBMITTED", "VALIDATING", "IMPORTING", "ASSESSING", "AWAITING_REVIEW", "APPROVED", "PUBLISHING", "PUBLISHED"];
+const states = ["SUBMITTED", "VALIDATING", "IMPORTING", "QUARANTINE", "ASSESSING", "AWAITING_REVIEW", "APPROVED", "PUBLISHING", "PUBLISHED"];
 
 function identity(value) {
   return value.includes("@") ? {email: value} : {github_username: value.replace(/^@/, "")};
@@ -149,6 +149,9 @@ function openActionDialog(item) {
   addFact(facts, "Status", item.status || "APPROVED");
   addFact(facts, "Risk", item.risk || "Unknown");
   addFact(facts, "Assessment", item.assessment_date || "Unknown");
+  addFact(facts, "Approved SHA", item.resolved_sha || "Unknown");
+  addFact(facts, "Latest upstream SHA", item.current_upstream_sha || item.latest_upstream_sha || item.resolved_sha || "Unknown");
+  addFact(facts, "Update available", item.update_available ? "Yes" : "No");
   addFact(facts, "Approver", item.approver || item.reviewer || "Recorded in review");
   addFact(facts, "Approval reason", item.approval_reason || "Recorded in review");
   addFact(facts, "Runner", runnerSummary(item.runner_requirements));
@@ -156,9 +159,9 @@ function openActionDialog(item) {
   const network = document.querySelector("#dialogNetwork");
   network.innerHTML = "";
   for (const entry of (item.network_requirements || []).slice(0, 20)) {
-    const tag = document.createElement("span");
-    tag.textContent = entry.domain || entry;
-    network.appendChild(tag);
+      const tag = document.createElement("span");
+      tag.textContent = entry.domain || entry;
+      network.appendChild(tag);
   }
   if (!network.children.length) {
     const tag = document.createElement("span");
@@ -249,9 +252,11 @@ function requestUrl(requestId) {
 function displayStatus(status) {
   const value = (status || "AWAITING_REVIEW").toUpperCase();
   if (value === "REJECTED") return {label: "Reject", className: "status-rejected"};
-  if (["AWAITING_REVIEW", "SUBMITTED", "VALIDATING", "IMPORTING", "ASSESSING"].includes(value)) {
+  if (["AWAITING_REVIEW", "SUBMITTED", "VALIDATING", "IMPORTING", "QUARANTINE", "ASSESSING", "REASSESSING", "AWAITING_UPDATE_APPROVAL"].includes(value)) {
     return {label: "In review", className: "status-review"};
   }
+  if (value === "UPDATE_AVAILABLE") return {label: "Update Available", className: "status-hold"};
+  if (value === "PUBLISHED") return {label: "Published", className: "status-review"};
   if (["FAILED_VALIDATION", "FAILED_IMPORT", "FAILED_ASSESSMENT", "FAILED_PUBLICATION", "APPROVED", "PUBLISHING"].includes(value)) {
     return {label: "On hold", className: "status-hold"};
   }
