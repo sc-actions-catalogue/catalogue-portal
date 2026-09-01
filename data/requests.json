@@ -1,6 +1,17 @@
 {
   "requests": [
     {
+      "request_id": "CAT-2026-00007",
+      "action": "actions/checkout@v4",
+      "requester": "devopsnation",
+      "status": "SUBMITTED",
+      "reason": "Request accepted from submission adapter",
+      "recommendation": "",
+      "risk": "",
+      "report_url": "",
+      "updated_at": "2026-09-01T09:31:22+00:00"
+    },
+    {
       "request_id": "CAT-2026-00006",
       "action": "actions/checkout@v4",
       "requester": "devopsnation",
