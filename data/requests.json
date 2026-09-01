@@ -4,12 +4,12 @@
       "request_id": "CAT-2026-00006",
       "action": "actions/checkout@v4",
       "requester": "devopsnation",
-      "status": "AWAITING_REVIEW",
-      "reason": "Assessment complete with risk MEDIUM",
+      "status": "PUBLISHING",
+      "reason": "Publication requires GitHub App installation with repository administration permission",
       "recommendation": "REVIEW",
       "risk": "MEDIUM",
       "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/feature%2Fenhanced-assessment-quarantine/assessments/CAT-2026-00006/report.md",
-      "updated_at": "2026-09-01T09:14:05+00:00"
+      "updated_at": "2026-09-01T09:19:32+00:00"
     },
     {
       "request_id": "CAT-2026-00001",
