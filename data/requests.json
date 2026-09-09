@@ -4,12 +4,12 @@
       "request_id": "CAT-2026-00006",
       "action": "hashicorp/setup-terraform@v4.0.1",
       "requester": "Tuhin",
-      "status": "APPROVED",
-      "reason": "Good for Consumption",
+      "status": "PUBLISHED",
+      "reason": "Published sc-actions-catalogue/actions/hashicorp-setup-terraform@hashicorp-setup-terraform/v4.0.1",
       "recommendation": "REVIEW",
       "risk": "MEDIUM",
       "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00006/report.md",
-      "updated_at": "2026-09-09T03:19:38+00:00"
+      "updated_at": "2026-09-09T03:19:46+00:00"
     },
     {
       "request_id": "CAT-2026-00001",
