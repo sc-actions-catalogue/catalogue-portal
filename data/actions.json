@@ -284,24 +284,24 @@
     },
     {
       "request_id": "CAT-2026-00006",
-      "name": "checkout",
-      "display_name": "Checkout",
-      "description": "Checkout a Git repository at a particular version",
-      "source": "actions/checkout",
-      "source_ref": "v4",
-      "resolved_sha": "11d5960a326750d5838078e36cf38b85af677262",
-      "current_upstream_sha": "11d5960a326750d5838078e36cf38b85af677262",
+      "name": "terraform",
+      "display_name": "HashiCorp - Setup Terraform",
+      "description": "Sets up Terraform CLI in your GitHub Actions workflow.",
+      "source": "hashicorp/setup-terraform",
+      "source_ref": "v4.0.1",
+      "resolved_sha": "dfe3c3f87815947d99a8997f908cb6525fc44e9e",
+      "current_upstream_sha": "dfe3c3f87815947d99a8997f908cb6525fc44e9e",
       "update_available": false,
       "catalogue_repo": "sc-actions-catalogue/actions",
-      "catalogue_path": "actions-checkout",
-      "catalogue_ref": "actions-checkout/v4",
+      "catalogue_path": "hashicorp-setup-terraform",
+      "catalogue_ref": "hashicorp-setup-terraform/v4.0.1",
       "status": "APPROVED",
       "risk": "MEDIUM",
       "runner_requirements": {
         "operating_system": "Unknown / Manual Review Required",
         "architecture": "Unknown",
         "container_requirement": "Not indicated",
-        "node_runtime": "node20",
+        "node_runtime": "node24",
         "python_runtime": "Unknown",
         "shell": "Composite-defined or runner default",
         "required_binaries": "Requires manual review",
@@ -315,27 +315,11 @@
       },
       "network_requirements": [
         {
-          "domain": "api.contoso.ghe.com",
+          "domain": "app.terraform.io",
           "classification": "EXTERNAL"
         },
         {
-          "domain": "api.fabrikam.ghe.com",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "api.github.com",
-          "classification": "EXPECTED"
-        },
-        {
-          "domain": "contoso.com",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "contoso.ghe.com",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "developer.github.com",
+          "domain": "bower.io",
           "classification": "EXTERNAL"
         },
         {
@@ -343,11 +327,7 @@
           "classification": "EXTERNAL"
         },
         {
-          "domain": "docs.microsoft.com",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "fabrikam.ghe.com",
+          "domain": "eslint.org",
           "classification": "EXTERNAL"
         },
         {
@@ -355,43 +335,19 @@
           "classification": "EXTERNAL"
         },
         {
-          "domain": "gh.io",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "git-scm.com",
-          "classification": "EXTERNAL"
-        },
-        {
           "domain": "github.com",
           "classification": "EXPECTED"
         },
         {
-          "domain": "help.github.com",
+          "domain": "gruntjs.com",
           "classification": "EXTERNAL"
         },
         {
-          "domain": "help.github.com",
+          "domain": "mozilla.org",
           "classification": "EXTERNAL"
         },
         {
-          "domain": "hub.docker.com",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "linux.die.net",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "mock-github.localhost",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "my-ghes-server.com",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "my-ghes-server.example.com",
+          "domain": "nodejs.org",
           "classification": "EXTERNAL"
         },
         {
@@ -399,31 +355,7 @@
           "classification": "EXTERNAL"
         },
         {
-          "domain": "opensource.guide",
-          "classification": "EXTERNAL"
-        },
-        {
           "domain": "registry.npmjs.org",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "spdx.org",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "src.onpremise.fabrikam.com",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "support.github.com",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "tbaggery.com",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "test.github.localhost",
           "classification": "EXTERNAL"
         },
         {
@@ -431,29 +363,29 @@
           "classification": "EXTERNAL"
         },
         {
-          "domain": "undici.nodejs.org",
+          "domain": "www.hashicorp.com",
           "classification": "EXTERNAL"
         },
         {
-          "domain": "v8.dev",
-          "classification": "EXTERNAL"
-        },
-        {
-          "domain": "www.apache.org",
+          "domain": "www.npmjs.com",
           "classification": "EXTERNAL"
         },
         {
           "domain": "www.patreon.com",
           "classification": "EXTERNAL"
+        },
+        {
+          "domain": "www.terraform.io",
+          "classification": "EXTERNAL"
         }
       ],
-      "assessment_date": "2026-09-01T09:14:05+00:00",
+      "assessment_date": "2026-09-09T03:10:53+00:00",
       "assessment_report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00006/report.md",
       "approver": "devopsnation",
-      "approval_reason": "testing",
-      "approval_date": "2026-09-01T09:19:32+00:00",
-      "published_date": "2026-09-01T09:19:36+00:00",
-      "usage": "- uses: sc-actions-catalogue/actions/actions-checkout@actions-checkout/v4"
+      "approval_reason": "Good for Consumption",
+      "approval_date": "2026-09-09T03:19:38+00:00",
+      "published_date": "2026-09-09T03:19:42+00:00",
+      "usage": "- uses: sc-actions-catalogue/actions/hashicorp-setup-terraform@hashicorp-setup-terraform/v4.0.1"
     },
     {
       "request_id": "CAT-2026-00003",
