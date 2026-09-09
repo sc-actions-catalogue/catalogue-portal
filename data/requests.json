@@ -1,26 +1,15 @@
 {
   "requests": [
     {
-      "request_id": "CAT-2026-00007",
-      "action": "actions/checkout@v4",
-      "requester": "devopsnation",
-      "status": "REJECTED",
-      "reason": "testing",
-      "recommendation": "REVIEW",
-      "risk": "MEDIUM",
-      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/feature%2Fenhanced-assessment-quarantine/assessments/CAT-2026-00007/report.md",
-      "updated_at": "2026-09-01T12:45:11+00:00"
-    },
-    {
       "request_id": "CAT-2026-00006",
-      "action": "actions/checkout@v4",
-      "requester": "devopsnation",
-      "status": "PUBLISHED",
-      "reason": "Published sc-actions-catalogue/actions/actions-checkout@actions-checkout/v4",
-      "recommendation": "REVIEW",
-      "risk": "MEDIUM",
-      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/feature%2Fenhanced-assessment-quarantine/assessments/CAT-2026-00006/report.md",
-      "updated_at": "2026-09-01T09:19:40+00:00"
+      "action": "hashicorp/setup-terraform@v4.0.1",
+      "requester": "Tuhin",
+      "status": "SUBMITTED",
+      "reason": "Request accepted from submission adapter",
+      "recommendation": "",
+      "risk": "",
+      "report_url": "",
+      "updated_at": "2026-09-09T03:10:47+00:00"
     },
     {
       "request_id": "CAT-2026-00001",
@@ -30,7 +19,7 @@
       "reason": "Latest Version Available",
       "recommendation": "REJECT",
       "risk": "HIGH",
-      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/feature%2Fenhanced-assessment-quarantine/assessments/CAT-2026-00001/report.md",
+      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00001/report.md",
       "updated_at": "2026-08-25T08:19:26+00:00"
     },
     {
@@ -41,7 +30,7 @@
       "reason": "Published sc-actions-catalogue/actions/snyk-actions@snyk-actions/master",
       "recommendation": "REJECT",
       "risk": "HIGH",
-      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/feature%2Fenhanced-assessment-quarantine/assessments/CAT-2026-00005/report.md",
+      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00005/report.md",
       "updated_at": "2026-08-25T07:51:00+00:00"
     },
     {
@@ -63,7 +52,7 @@
       "reason": "Published sc-actions-catalogue/actions/actions-checkout@actions-checkout/v7",
       "recommendation": "REVIEW",
       "risk": "MEDIUM",
-      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/feature%2Fenhanced-assessment-quarantine/assessments/CAT-2026-00003/report.md",
+      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00003/report.md",
       "updated_at": "2026-08-25T06:22:32+00:00"
     },
     {
@@ -74,7 +63,7 @@
       "reason": "High Risk",
       "recommendation": "REJECT",
       "risk": "HIGH",
-      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/feature%2Fenhanced-assessment-quarantine/assessments/CAT-2026-00002/report.md",
+      "report_url": "https://github.com/sc-actions-catalogue/catalogue-control/blob/main/assessments/CAT-2026-00002/report.md",
       "updated_at": "2026-08-24T20:53:37+00:00"
     }
   ]
